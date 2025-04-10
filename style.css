@@ -10,7 +10,6 @@
 }
 
 body {
-    /* background-color: #09d910; */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,13 +21,10 @@ body {
 }
 
 .main-container {
-    /* border: solid; */
-    /* border-color: #e40400; */
     width: 100%;
     min-height: 100dvh;
     z-index: 1;
     background: linear-gradient(to bottom, rgb(56, 85, 216), rgb(27, 30, 158));
-    /* backdrop-filter: blur(100px); */
     padding: 20px;
 }
 
@@ -176,51 +172,3 @@ body {
 }
 
 /* END WEATHER INFO */
-
-/* MENU ICON AND FAVORITES MENU */
-
-.menu-icon {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    cursor: pointer;
-    z-index: 2;
-    font-size: 30px;
-}
-
-.favorites-menu {
-    position: fixed;
-    top: 0;
-    left: -250px;
-    width: 250px;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    transition: 0.3s left;
-    z-index: 1;
-}
-
-.favorites-menu.open {
-    left: 0;
-}
-
-.favorites-menu h3 {
-    font-size: 20px;
-    margin-bottom: 10px;
-}
-
-.favorite-city {
-    padding: 10px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 8px;
-    cursor: pointer;
-    text-align: center;
-    transition: 0.2s background;
-}
-
-.favorite-city:hover {
-    background: rgba(255, 255, 255, 0.2);
-}
