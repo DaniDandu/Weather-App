@@ -1,7 +1,4 @@
-import dotenv from 'dotenv';
-dotenv.config();
-
-const apiKey = process.env.API_KEY;
+import { apiKey } from './config.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     const menuIcon = document.querySelector('.menu-icon');
@@ -132,12 +129,10 @@ document.addEventListener('DOMContentLoaded', function () {
         cityTxt.textContent = country
         tempTxt.textContent = Math.round(temp) + ' °C'
         conditionTxt.textContent = main
-        // highTemp.textContent = "H: " + Math.round(temp_max) + ' °C'
-        // lowTemp.textContent = "L: " + Math.round(temp_min) + ' °C'
         feelsTemp.textContent = Math.round(feels_like) + ' °C'
         humidityValueTxt.textContent = humidity + '%'
         cloudsValueTxt.textContent = all + '%'
-        windValueTxt.textContent = Math.round(speed * 3.6) + ' km/h'
+        windValueTxt.textContent = Math.round(speed) + ' km/h'
 
         weatherSummaryImg.src = `/assets/weather/${getWeatherIcon(id)}`
     
