@@ -1,4 +1,7 @@
-const apiKey = "06efa3513dd9863039b20d7222dee51d";
+import dotenv from 'dotenv';
+dotenv.config();
+
+const apiKey = process.env.API_KEY;
 
 document.addEventListener('DOMContentLoaded', function () {
     const menuIcon = document.querySelector('.menu-icon');
