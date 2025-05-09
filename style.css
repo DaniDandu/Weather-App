@@ -180,6 +180,7 @@ body {
 
 .country-txt {
     font-size: 30px;
+    margin-top: 20px;
 }
 
 .location {
@@ -198,6 +199,7 @@ body {
 .weather-summary-img {
     width: 150px;
     height: 150px;
+    margin-top: -10px;
 }
 
 .weather-summary-info {
