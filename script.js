@@ -20,6 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const windValueTxt = document.querySelector('.wind-value-txt');
     const weatherSummaryImg = document.querySelector('.weather-summary-img');
     const currentDateTxt = document.querySelector('.current-date-txt');
+    const currentLocationTxt = document.querySelector('.current-location');
 
     const forecastItemsContainer = document.querySelector('.forecast-items-container')
 
@@ -99,12 +100,29 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     })
 
+    // Request location and load weather data
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+            const { latitude, longitude } = position.coords;
+            await updateWeatherInfoByCoords(latitude, longitude);
+        }, (error) => {
+            console.error("Geolocation error:", error);
+        });
+    } else {
+        console.error("Geolocation is not supported by this browser.");
+    }
 
     async function getFetchData(endPoint, city) {
         const apiUrl = `https://api.openweathermap.org/data/2.5/${endPoint}?q=${city}&appid=${apiKey}&units=metric`;
     
         const response = await fetch(apiUrl);
     
+        return response.json();
+    }
+
+    async function getFetchDataByCoords(endPoint, lat, lon) {
+        const apiUrl = `https://api.openweathermap.org/data/2.5/${endPoint}?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+        const response = await fetch(apiUrl);
         return response.json();
     }
 
@@ -151,8 +169,34 @@ document.addEventListener('DOMContentLoaded', function () {
 
         currentDateTxt.textContent = getCurrentDate()
         weatherSummaryImg.src = `/assets/weather/${getWeatherIcon(id)}`
+
+        currentLocationTxt.style.display = 'none';
         
         await updateForecastInfo(city)
+    }
+    
+    async function updateWeatherInfoByCoords(lat, lon) {
+        const weatherData = await getFetchDataByCoords('weather', lat, lon);
+        const {
+            name: city,
+            main: { temp, feels_like, humidity },
+            clouds: { all },
+            weather: [{ id, main }],
+            wind: { speed },
+        } = weatherData;
+
+        cityTxt.textContent = city;
+        tempTxt.textContent = Math.round(temp) + ' °C';
+        conditionTxt.textContent = main;
+        feelsTemp.textContent = Math.round(feels_like) + ' °C';
+        humidityValueTxt.textContent = humidity + '%';
+        cloudsValueTxt.textContent = all + '%';
+        windValueTxt.textContent = Math.round(speed) + ' km/h';
+
+        currentDateTxt.textContent = getCurrentDate();
+        weatherSummaryImg.src = `/assets/weather/${getWeatherIcon(id)}`;
+
+        await updateForecastInfoByCoords(lat, lon);
     }
     
     async function updateForecastInfo(city) {
@@ -169,6 +213,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 updateForecastItems(forecastWeather)
             }
         })
+    }
+    
+    async function updateForecastInfoByCoords(lat, lon) {
+        const forecastsData = await getFetchDataByCoords('forecast', lat, lon);
+
+        const timeTaken = '15:00:00';
+        const todayDate = new Date().toISOString().split('T')[0];
+
+        forecastItemsContainer.innerHTML = '';
+        forecastsData.list.forEach(forecastWeather => {
+            if (forecastWeather.dt_txt.includes(timeTaken) &&
+                !forecastWeather.dt_txt.includes(todayDate)) {
+                updateForecastItems(forecastWeather);
+            }
+        });
     }
     
     function updateForecastItems(weatherData) {

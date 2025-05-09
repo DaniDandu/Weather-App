@@ -180,13 +180,27 @@ body {
 
 .country-txt {
     font-size: 30px;
+    text-align: center;
     margin-top: 20px;
 }
 
 .location {
     display: flex;
+    flex-direction: column; 
+}
+
+.current-location {
+    display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 6px;
+    font-size: 14px;
+    color: rgb(79, 79, 79);
+    gap: 2px;
+    margin-bottom: -20px;
+}
+
+#location-icon {
+    font-size: 14px;
 }
 
 .weather-summary-container {
