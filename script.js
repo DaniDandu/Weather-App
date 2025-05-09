@@ -22,9 +22,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const currentDateTxt = document.querySelector('.current-date-txt');
     const currentLocationTxt = document.querySelector('.current-location');
 
-    const forecastItemsContainer = document.querySelector('.forecast-items-container')
-
-
+    const forecastItemsContainer = document.querySelector('.forecast-items-container');
+    const saveLocationBtn = document.querySelector('.save-location-btn');
+    const favoriteCitiesList = document.querySelector('.favorite-cities-list');
 
     // Funcționalitate meniu
     if (menuIcon) {
@@ -172,6 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         currentLocationTxt.style.display = 'none';
         
+        toggleSaveLocationButton(city); // Check if the button should be visible
         await updateForecastInfo(city)
     }
     
@@ -196,6 +197,8 @@ document.addEventListener('DOMContentLoaded', function () {
         currentDateTxt.textContent = getCurrentDate();
         weatherSummaryImg.src = `/assets/weather/${getWeatherIcon(id)}`;
 
+        toggleSaveLocationButton(city); // Check if the button should be visible
+        loadSavedLocations(city, temp); // Pass the current city and temperature to highlight it in the sidebar
         await updateForecastInfoByCoords(lat, lon);
     }
     
@@ -257,5 +260,163 @@ document.addEventListener('DOMContentLoaded', function () {
         forecastItemsContainer.insertAdjacentHTML('beforeend', forecastItem)
 
     }
+
+    saveLocationBtn.addEventListener('click', () => {
+        const city = cityTxt.textContent.trim();
+        if (city && city !== '-') {
+            saveLocation(city);
+            toggleSaveLocationButton(city); // Recheck visibility after saving
+            loadSavedLocations(); // Reload the sidebar with updated cities
+        } else {
+            alert('No location to save.');
+        }
+    });
+
+    function saveLocation(city) {
+        let savedLocations = JSON.parse(localStorage.getItem('savedLocations')) || [];
+        if (!savedLocations.includes(city)) {
+            savedLocations.push(city);
+            localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
+            alert(`${city} has been saved.`);
+        } else {
+            alert(`${city} is already saved.`);
+        }
+    }
+
+    function toggleSaveLocationButton(city) {
+        const savedLocations = JSON.parse(localStorage.getItem('savedLocations')) || [];
+        if (savedLocations.includes(city)) {
+            saveLocationBtn.style.display = 'none'; // Hide button if city is saved
+        } else {
+            saveLocationBtn.style.display = 'block'; // Show button if city is not saved
+        }
+    }
+
+    function loadSavedLocations(currentCity = null, currentTemp = null) {
+        const savedLocations = JSON.parse(localStorage.getItem('savedLocations')) || [];
+        favoriteCitiesList.innerHTML = ''; // Clear the list before populating
+
+        // Add current location as the first city
+        if (currentCity) {
+            const currentCityItem = `
+                <div class="favorite-item" data-city="${currentCity}">
+                    <span class="material-symbols-outlined">place</span>
+                    <div class="favotite-city-name">
+                        <h3>${currentCity}</h3>
+                        <h5 class="regular-txt">Your Location</h5>
+                    </div>
+                    <div class="favorite-city-temp">
+                        <h4>${Math.round(currentTemp)} °C</h4>
+                    </div>
+                </div>
+            `;
+            favoriteCitiesList.insertAdjacentHTML('afterbegin', currentCityItem);
+        }
+
+        // Add saved locations, excluding the current location
+        savedLocations.forEach(async (city) => {
+            if (city !== currentCity) { // Avoid duplicate entry for the current location
+                const weatherData = await getFetchData('weather', city);
+                const { main: { temp } } = weatherData;
+                const cityItem = `
+                    <div class="favorite-item" data-city="${city}">
+                        <span class="material-symbols-outlined">place</span>
+                        <div class="favotite-city-name">
+                            <h3>${city}</h3>
+                        </div>
+                        <div class="favorite-city-temp">
+                            <h4>${Math.round(temp)} °C</h4>
+                        </div>
+                        <div class="delete-btn">Delete</div>
+                    </div>
+                `;
+                favoriteCitiesList.insertAdjacentHTML('beforeend', cityItem);
+            }
+        });
+
+        // Add click event listener to each city item
+        favoriteCitiesList.addEventListener('click', (e) => {
+            const cityItem = e.target.closest('.favorite-item');
+            if (cityItem && !e.target.classList.contains('delete-btn')) {
+                resetSwipedItems(); // Reset all swiped items
+                const city = cityItem.getAttribute('data-city');
+                updateWeatherInfo(city); // Load weather data for the clicked city
+                menuSidebar.classList.remove('active'); // Hide the sidebar menu
+            }
+        });
+
+        // Add swipe and delete functionality
+        favoriteCitiesList.addEventListener('touchstart', handleTouchStart, false);
+        favoriteCitiesList.addEventListener('touchmove', handleTouchMove, false);
+        favoriteCitiesList.addEventListener('click', (e) => {
+            if (e.target.classList.contains('delete-btn')) {
+                const cityItem = e.target.closest('.favorite-item');
+                const city = cityItem.getAttribute('data-city');
+                deleteCity(city);
+                cityItem.remove();
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!e.target.closest('.favorite-item')) {
+                resetSwipedItems(); // Reset all swiped items if clicking outside
+            }
+        });
+
+        let xStart = null;
+
+        function handleTouchStart(e) {
+            const touch = e.touches[0];
+            xStart = touch.clientX;
+        }
+
+        function handleTouchMove(e) {
+            if (!xStart) return;
+
+            const touch = e.touches[0];
+            const xDiff = xStart - touch.clientX;
+
+            if (xDiff > 50) { // Swipe left
+                const cityItem = e.target.closest('.favorite-item');
+                if (cityItem && !cityItem.classList.contains('current-location')) {
+                    resetSwipedItems(); // Reset other swiped items
+                    cityItem.classList.add('swiped');
+                }
+            } else if (xDiff < -50) { // Swipe right to reset
+                const cityItem = e.target.closest('.favorite-item');
+                if (cityItem) {
+                    cityItem.classList.remove('swiped');
+                }
+            }
+        }
+
+        function resetSwipedItems() {
+            const swipedItems = document.querySelectorAll('.favorite-item.swiped');
+            swipedItems.forEach(item => item.classList.remove('swiped'));
+        }
+
+        function deleteCity(city) {
+            let savedLocations = JSON.parse(localStorage.getItem('savedLocations')) || [];
+            savedLocations = savedLocations.filter(savedCity => savedCity !== city);
+            localStorage.setItem('savedLocations', JSON.stringify(savedLocations));
+        }
+    }
+
+    // Ensure current location is always loaded when the sidebar is opened
+    saveLocationBtn.addEventListener('click', async () => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (position) => {
+                const { latitude, longitude } = position.coords;
+                const weatherData = await getFetchDataByCoords('weather', latitude, longitude);
+                const { name: currentCity, main: { temp: currentTemp } } = weatherData;
+                loadSavedLocations(currentCity, currentTemp);
+            });
+        } else {
+            loadSavedLocations(); // Load saved locations without current location if geolocation is unavailable
+        }
+    });
+
+    // Load saved locations on page load
+    loadSavedLocations();
 });
 

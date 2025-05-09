@@ -83,6 +83,7 @@ body {
 }
 
 .favorite-item {
+    position: relative;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -90,6 +91,33 @@ body {
     background: rgb(255, 255, 255, 0.1);
     border-radius: 12px;
     gap: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.favorite-item .delete-btn {
+    position: absolute;
+    right: -100px; /* Hide the button off-screen */
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    background: rgb(151, 9, 9);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 12px;
+    transition: right 0.3s ease; /* Smooth transition for visibility */
+}
+
+.favorite-item.swiped .delete-btn {
+    right: 0; /* Make the button visible when swiped */
+}
+
+.favorite-item.current-location .delete-btn {
+    display: none; /* Hide the delete button for the current location */
 }
 
 .favorite-item .material-symbols-outlined {
@@ -281,6 +309,31 @@ body {
 .forecast-item-img {
     width: 60px;
     height: 60px;
+}
+
+/* Save Location Button */
+
+.save-location {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -10px;
+}
+
+.save-location-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-location-btn:hover {
+    background-color: rgb(255, 255, 255, 0.1);
 }
 
 /* END WEATHER INFO */
