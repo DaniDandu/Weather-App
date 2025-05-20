@@ -1,6 +1,14 @@
 import { apiKey } from './config.js';
 
 document.addEventListener('DOMContentLoaded', function () {
+    const splashScreen = document.querySelector('.splash-screen');
+    const mainContainer = document.querySelector('.main-container');
+
+    setTimeout(() => {
+        splashScreen.classList.add('hidden'); // Fade out splash screen
+        mainContainer.classList.add('visible'); // Fade in main screen
+    }, 2000); // Adjust the delay as needed (2000ms = 2 seconds)
+
     const menuIcon = document.querySelector('.menu-icon');
     const closeMenu = document.querySelector('.close-menu');
     const menuSidebar = document.querySelector('.menu-sidebar');
