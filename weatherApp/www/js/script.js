@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
         windValueTxt.textContent = Math.round(speed) + ' km/h'
 
         currentDateTxt.textContent = getCurrentDate()
-        weatherSummaryImg.src = `/assets/weather/${getWeatherIcon(id)}`
+        weatherSummaryImg.src = `./img/weather/${getWeatherIcon(id)}`;
 
         currentLocationTxt.style.display = 'none';
         
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
         windValueTxt.textContent = Math.round(speed) + ' km/h';
 
         currentDateTxt.textContent = getCurrentDate();
-        weatherSummaryImg.src = `/assets/weather/${getWeatherIcon(id)}`;
+        weatherSummaryImg.src = `./img/weather/${getWeatherIcon(id)}`;
 
         toggleSaveLocationButton(city); // Check if the button should be visible
         loadSavedLocations(city, temp); // Pass the current city and temperature to highlight it in the sidebar
@@ -260,10 +260,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const forecastItem = `
                 <div class="forecast-item">
                     <h5 class="forecast-item-date regular-txt">${dateResult}</h5>
-                    <img src="assets/weather/${getWeatherIcon(id)}" class="forecast-item-img">
+                    <img src="./img/weather/${getWeatherIcon(id)}" class="forecast-item-img">
                     <h5 class="forecast-item-temp">${Math.round(temp)} °C</h5>
                 </div>
         `;
+
 
         forecastItemsContainer.insertAdjacentHTML('beforeend', forecastItem)
 
