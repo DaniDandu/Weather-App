@@ -9,6 +9,13 @@ document.addEventListener('DOMContentLoaded', function () {
         mainContainer.classList.add('visible'); // Fade in main screen
     }, 2000); // Adjust the delay as needed (2000ms = 2 seconds)
 
+    document.addEventListener("deviceready", initApp);
+    
+    // fallback pentru browser
+    if (!window.cordova) {
+        initApp();
+    }
+
     const menuIcon = document.querySelector('.menu-icon');
     const closeMenu = document.querySelector('.close-menu');
     const menuSidebar = document.querySelector('.menu-sidebar');
@@ -109,16 +116,53 @@ document.addEventListener('DOMContentLoaded', function () {
     })
 
     // Request location and load weather data
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            const { latitude, longitude } = position.coords;
-            await updateWeatherInfoByCoords(latitude, longitude);
-        }, (error) => {
-            console.error("Geolocation error:", error);
-        });
-    } else {
-        console.error("Geolocation is not supported by this browser.");
+    function initApp() {
+        if (typeof cordova !== 'undefined' && cordova.plugins && cordova.plugins.diagnostic) {
+            console.log("Cordova + diagnostic disponibile");
+
+            cordova.plugins.diagnostic.requestLocationAuthorization(
+                status => {
+                    if (
+                        status === cordova.plugins.diagnostic.permissionStatus.GRANTED ||
+                        status === cordova.plugins.diagnostic.permissionStatus.GRANTED_WHEN_IN_USE
+                    ) {
+                        getCurrentLocation();
+                    } else {
+                        alert("Permisiunea pentru locație a fost refuzată.");
+                    }
+                },
+                error => {
+                    console.error("Eroare la cererea permisiunii:", error);
+                }
+            );
+        } else {
+            console.log("Cordova nu e disponibil, rulăm fallback pentru browser.");
+            getCurrentLocation(); // fallback în browser
+        }
     }
+
+    function getCurrentLocation() {
+        if ("geolocation" in navigator) {
+            navigator.geolocation.getCurrentPosition(
+                async position => {
+                    const { latitude, longitude } = position.coords;
+                    console.log("📍 Coordonate:", latitude, longitude);
+                    await updateWeatherInfoByCoords(latitude, longitude);
+                },
+                error => {
+                    console.error("Eroare geolocație:", error);
+                },
+                {
+                    enableHighAccuracy: true,
+                    timeout: 10000,
+                    maximumAge: 0
+                }
+            );
+        } else {
+            alert("Geolocația nu este suportată.");
+        }
+    }
+
 
     async function getFetchData(endPoint, city) {
         const apiUrl = `https://api.openweathermap.org/data/2.5/${endPoint}?q=${city}&appid=${apiKey}&units=metric`;

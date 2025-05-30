@@ -19,8 +19,8 @@
     <allow-intent href="https://*/*" />
 
     <plugin name="cordova-plugin-geolocation" />
-    <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/uses-permission[@android:name='android.permission.ACCESS_FINE_LOCATION']">
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest">
+        <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     </edit-config>
 
 
