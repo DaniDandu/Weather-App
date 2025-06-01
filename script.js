@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         currentLocationTxt.style.display = 'none';
         
-        toggleSaveLocationButton(city); // Check if the button should be visible
+        toggleSaveLocationButton(country); // Check if the button should be visible
         await updateForecastInfo(city)
     }
     
