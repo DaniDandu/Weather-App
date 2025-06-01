@@ -180,7 +180,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         currentLocationTxt.style.display = 'none';
         
-        toggleSaveLocationButton(country); // Check if the button should be visible
+        toggleSaveLocationButton(country); 
         await updateForecastInfo(city)
     }
     
@@ -205,8 +205,8 @@ document.addEventListener('DOMContentLoaded', function () {
         currentDateTxt.textContent = getCurrentDate();
         weatherSummaryImg.src = `/assets/weather/${getWeatherIcon(id)}`;
 
-        toggleSaveLocationButton(city); // Check if the button should be visible
-        loadSavedLocations(city, temp); // Pass the current city and temperature to highlight it in the sidebar
+        toggleSaveLocationButton(city); 
+        loadSavedLocations(city, temp);
         await updateForecastInfoByCoords(lat, lon);
     }
     
