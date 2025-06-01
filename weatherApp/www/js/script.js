@@ -135,10 +135,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     console.error("Eroare la cererea permisiunii:", error);
                 }
             );
-        } else {
-            console.log("Cordova nu e disponibil, rulăm fallback pentru browser.");
-            getCurrentLocation(); // fallback în browser
-        }
+        } 
     }
 
     function getCurrentLocation() {
@@ -146,7 +143,6 @@ document.addEventListener('DOMContentLoaded', function () {
             navigator.geolocation.getCurrentPosition(
                 async position => {
                     const { latitude, longitude } = position.coords;
-                    console.log("📍 Coordonate:", latitude, longitude);
                     await updateWeatherInfoByCoords(latitude, longitude);
                 },
                 error => {
