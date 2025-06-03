@@ -1,4 +1,4 @@
-import { apiKey } from './config.js';
+import { apiKey } from './config.mjs';
 
 document.addEventListener('DOMContentLoaded', function () {
     const splashScreen = document.querySelector('.splash-screen');
