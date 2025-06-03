@@ -1,4 +1,4 @@
-import { apiKey } from './config.mjs';
+import { apiKey } from './config.js';
 
 document.addEventListener('DOMContentLoaded', function () {
     const splashScreen = document.querySelector('.splash-screen');
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', function () {
         windValueTxt.textContent = Math.round(speed) + ' km/h'
 
         currentDateTxt.textContent = getCurrentDate()
-        weatherSummaryImg.src = `/assets/weather/${getWeatherIcon(id)}`
+        weatherSummaryImg.src = `/assets/img/weather/${getWeatherIcon(id)}`
 
         currentLocationTxt.style.display = 'none';
         
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
         windValueTxt.textContent = Math.round(speed) + ' km/h';
 
         currentDateTxt.textContent = getCurrentDate();
-        weatherSummaryImg.src = `/assets/weather/${getWeatherIcon(id)}`;
+        weatherSummaryImg.src = `/assets/img/weather/${getWeatherIcon(id)}`;
 
         toggleSaveLocationButton(city); 
         loadSavedLocations(city, temp);
@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const forecastItem = `
                 <div class="forecast-item">
                     <h5 class="forecast-item-date regular-txt">${dateResult}</h5>
-                    <img src="assets/weather/${getWeatherIcon(id)}" class="forecast-item-img">
+                    <img src="assets/img/weather/${getWeatherIcon(id)}" class="forecast-item-img">
                     <h5 class="forecast-item-temp">${Math.round(temp)} °C</h5>
                 </div>
         `;
