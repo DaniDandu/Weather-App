@@ -1,5 +1,5 @@
 {
-  "appId": "com.vreme.app",
-  "appName": "vreme-app",
+  "appId": "com.weather.app",
+  "appName": "Weatherly",
   "webDir": "www"
 }
