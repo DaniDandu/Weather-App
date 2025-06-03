@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
-  <title>Ionic App</title>
+  <title>Weatherly</title>
 
   <base href="/" />
 
@@ -12,7 +12,7 @@
   <meta name="format-detection" content="telephone=no" />
   <meta name="msapplication-tap-highlight" content="no" />
 
-  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
+  <link rel="icon" type="image/png" href="public/assets/logo.png" />
 
   <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -24,18 +24,10 @@
 
 <body>
   <app-root>
-    <link rel="preload" as="image" href="assets/weather/atmosphere.svg">
-    <link rel="preload" as="image" href="assets/weather/clear.svg">
-    <link rel="preload" as="image" href="assets/weather/clouds.svg">
-    <link rel="preload" as="image" href="assets/weather/drizzle.svg">
-    <link rel="preload" as="image" href="assets/weather/rain.svg">
-    <link rel="preload" as="image" href="assets/weather/snow.svg">
-    <link rel="preload" as="image" href="assets/weather/thunderstorm.svg">
-    <link rel="preload" as="image" href="assets/logo.png">
-
     <div class="splash-screen">
         <img src="assets/logo.png" alt="App Logo" class="splash-logo">
     </div>
+
     <div class="menu-sidebar">
         <div class="menu-header">
             <h2>Favorite Cities</h2>
@@ -116,10 +108,7 @@
                 <div class="weather-summary-info">
                     <h1 class="temp-txt"> - </h1>
                     <h3 class="condition-txt regular-txt"> </h3>
-                    <!-- <h5 class="high-temp regular-txt">H: 32°C</h5>
-                    <h5 class="low-temp regular-txt">L: 20 °C</h5> -->
                 </div>
-                <!-- <button class="save-location-btn">Save Location</button> -->
             </div>
 
             <div class="weather-conditions-container">
@@ -195,13 +184,8 @@
             </div>
 
             <div class="save-location"><button class="save-location-btn">Save Location</button></div>
-
-            
-            
         </section>
     </main>
-
   </app-root>
 </body>
-
 </html>

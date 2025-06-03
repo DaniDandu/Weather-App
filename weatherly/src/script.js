@@ -6,9 +6,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const mainContainer = document.querySelector('.main-container');
 
     setTimeout(() => {
-        splashScreen.classList.add('hidden'); // Fade out splash screen
-        mainContainer.classList.add('visible'); // Fade in main screen
-    }, 2000); // Adjust the delay as needed (2000ms = 2 seconds)
+        splashScreen.classList.add('hidden');
+        mainContainer.classList.add('visible'); 
+    }, 2000);
 
     const menuIcon = document.querySelector('.menu-icon');
     const closeMenu = document.querySelector('.close-menu');
@@ -111,13 +111,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     getUserLocation();
 
-    // Request location and load weather data
     async function getUserLocation() {
         try {
-            // Cere permisiunea pentru locație
             const permission = await Geolocation.requestPermissions();
-
-            // Verifică permisiunea actuală
             const status = await Geolocation.checkPermissions();
 
             if (
@@ -135,15 +131,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
     async function getFetchData(endPoint, city) {
         const apiUrl = `https://api.openweathermap.org/data/2.5/${endPoint}?q=${city}&appid=${apiKey}&units=metric`;
-    
+
         const response = await fetch(apiUrl);
-    
+
         return response.json();
     }
 
     async function getFetchDataByCoords(endPoint, lat, lon) {
         const apiUrl = `https://api.openweathermap.org/data/2.5/${endPoint}?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+
         const response = await fetch(apiUrl);
+        
         return response.json();
     }
 
@@ -170,7 +168,6 @@ document.addEventListener('DOMContentLoaded', function () {
     
     async function updateWeatherInfo(city) {
         const weatherData = await getFetchData('weather', city);
-        // console.log(weatherData);
     
         const {
             name: country,
@@ -286,8 +283,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const city = cityTxt.textContent.trim();
         if (city && city !== '-') {
             saveLocation(city);
-            toggleSaveLocationButton(city); // Recheck visibility after saving
-            loadSavedLocations(); // Reload the sidebar with updated cities
+            toggleSaveLocationButton(city);
+            loadSavedLocations();
         } else {
             alert('No location to save.');
         }
@@ -307,17 +304,16 @@ document.addEventListener('DOMContentLoaded', function () {
     function toggleSaveLocationButton(city) {
         const savedLocations = JSON.parse(localStorage.getItem('savedLocations')) || [];
         if (savedLocations.includes(city)) {
-            saveLocationBtn.style.display = 'none'; // Hide button if city is saved
+            saveLocationBtn.style.display = 'none';
         } else {
-            saveLocationBtn.style.display = 'block'; // Show button if city is not saved
+            saveLocationBtn.style.display = 'block';
         }
     }
 
     function loadSavedLocations(currentCity = null, currentTemp = null) {
         const savedLocations = JSON.parse(localStorage.getItem('savedLocations')) || [];
-        favoriteCitiesList.innerHTML = ''; // Clear the list before populating
+        favoriteCitiesList.innerHTML = '';
 
-        // Add current location as the first city
         if (currentCity) {
             const currentCityItem = `
                 <div class="favorite-item" data-city="${currentCity}">
@@ -334,9 +330,8 @@ document.addEventListener('DOMContentLoaded', function () {
             favoriteCitiesList.insertAdjacentHTML('afterbegin', currentCityItem);
         }
 
-        // Add saved locations, excluding the current location
         savedLocations.forEach(async (city) => {
-            if (city !== currentCity) { // Avoid duplicate entry for the current location
+            if (city !== currentCity) { 
                 const weatherData = await getFetchData('weather', city);
                 const { main: { temp } } = weatherData;
                 const cityItem = `
@@ -355,18 +350,17 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // Add click event listener to each city item
         favoriteCitiesList.addEventListener('click', (e) => {
             const cityItem = e.target.closest('.favorite-item');
             if (cityItem && !e.target.classList.contains('delete-btn')) {
-                resetSwipedItems(); // Reset all swiped items
+                resetSwipedItems();
                 const city = cityItem.getAttribute('data-city');
-                updateWeatherInfo(city); // Load weather data for the clicked city
-                menuSidebar.classList.remove('active'); // Hide the sidebar menu
+                updateWeatherInfo(city);
+                menuSidebar.classList.remove('active');
             }
         });
 
-        // Add swipe and delete functionality
+        // functionalitate swipe delete
         favoriteCitiesList.addEventListener('touchstart', handleTouchStart, false);
         favoriteCitiesList.addEventListener('touchmove', handleTouchMove, false);
         favoriteCitiesList.addEventListener('click', (e) => {
@@ -380,7 +374,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.favorite-item')) {
-                resetSwipedItems(); // Reset all swiped items if clicking outside
+                resetSwipedItems(); 
             }
         });
 
@@ -397,13 +391,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const touch = e.touches[0];
             const xDiff = xStart - touch.clientX;
 
-            if (xDiff > 50) { // Swipe left
+            if (xDiff > 50) { 
                 const cityItem = e.target.closest('.favorite-item');
                 if (cityItem && !cityItem.classList.contains('current-location')) {
-                    resetSwipedItems(); // Reset other swiped items
+                    resetSwipedItems();
                     cityItem.classList.add('swiped');
                 }
-            } else if (xDiff < -50) { // Swipe right to reset
+            } else if (xDiff < -50) {
                 const cityItem = e.target.closest('.favorite-item');
                 if (cityItem) {
                     cityItem.classList.remove('swiped');
@@ -423,7 +417,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Ensure current location is always loaded when the sidebar is opened
     saveLocationBtn.addEventListener('click', async () => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(async (position) => {
@@ -433,11 +426,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 loadSavedLocations(currentCity, currentTemp);
             });
         } else {
-            loadSavedLocations(); // Load saved locations without current location if geolocation is unavailable
+            loadSavedLocations();
         }
     });
 
-    // Load saved locations on page load
     loadSavedLocations();
 });
 
