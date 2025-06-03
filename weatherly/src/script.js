@@ -1,4 +1,5 @@
 import { apiKey } from './config.js';
+import { Geolocation } from '@capacitor/geolocation';
 
 document.addEventListener('DOMContentLoaded', function () {
     const splashScreen = document.querySelector('.splash-screen');
@@ -108,16 +109,28 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     })
 
+    getUserLocation();
+
     // Request location and load weather data
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (position) => {
-            const { latitude, longitude } = position.coords;
-            await updateWeatherInfoByCoords(latitude, longitude);
-        }, (error) => {
-            console.error("Geolocation error:", error);
-        });
-    } else {
-        console.error("Geolocation is not supported by this browser.");
+    async function getUserLocation() {
+        try {
+            // Cere permisiunea pentru locație
+            const permission = await Geolocation.requestPermissions();
+
+            // Verifică permisiunea actuală
+            const status = await Geolocation.checkPermissions();
+
+            if (
+                status.location === 'granted' ||
+                status.location === 'granted-in-use'
+            ) {
+                const coordinates = await Geolocation.getCurrentPosition();
+                const { latitude, longitude } = coordinates.coords;
+                await updateWeatherInfoByCoords(latitude, longitude);
+            }
+        } catch (error) {
+            console.error("Location error:", error);
+        }
     }
 
     async function getFetchData(endPoint, city) {
