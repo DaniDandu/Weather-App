@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.addEventListener("deviceready", initApp);
     
-    // fallback pentru browser
+    // fallback pentru browser 
     if (!window.cordova) {
         initApp();
     }
