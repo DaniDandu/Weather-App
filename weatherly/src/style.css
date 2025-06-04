@@ -4,7 +4,7 @@ html, body {
     overflow: auto; /* Permite scroll-ul */
     background: linear-gradient(to bottom, rgb(56, 85, 216), rgb(27, 30, 158));
     background-repeat: no-repeat;
-    background-size: 100% 1000vh;
+    background-size: 100%;
 }
 
 body {
