@@ -2,7 +2,7 @@
 
 html, body {
     min-height: 100vh;
-    overflow: auto; /* Permite scroll-ul */
+    overflow: auto;
     background: linear-gradient(to bottom, rgb(56, 85, 216), rgb(27, 30, 158));
     background-repeat: no-repeat;
     background-size: 100% 1000vh;
@@ -10,9 +10,9 @@ html, body {
 
 body {
     display: flex;
-    flex-direction: column; /* Asigură afișarea corectă a conținutului */
+    flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Afișează conținutul de sus */
+    justify-content: flex-start;
 }
 
 * {
@@ -29,20 +29,20 @@ body {
 }
 
 .main-container {
-    position: relative; /* Permite scroll-ul */
+    position: relative;
     width: 100%;
-    min-height: 100vh; /* Ajustează pentru a ocupa întreaga înălțime a paginii */
+    min-height: 100vh;
     z-index: 1;
     background: linear-gradient(to bottom, rgb(56, 85, 216), rgb(27, 30, 158));
     padding: 20px;
-    opacity: 0; /* Initially hidden */
-    transform: translateY(-20px); /* Start slightly above */
-    transition: opacity 0.5s ease, transform 0.5s ease; /* Smooth fade-in and slide-in */
+    opacity: 0; 
+    transform: translateY(-20px); 
+    transition: opacity 0.5s ease, transform 0.5s ease; 
 }
 
 .main-container.visible {
-    opacity: 1; /* Fully visible */
-    transform: translateY(0); /* Slide to normal position */
+    opacity: 1; 
+    transform: translateY(0); 
 }
 
 /* MENU AND SEARCH */
@@ -113,7 +113,7 @@ body {
 
 .favorite-item .delete-btn {
     position: absolute;
-    right: -100px; /* Hide the button off-screen */
+    right: -100px; 
     top: 0;
     bottom: 0;
     width: 100px;
@@ -125,15 +125,15 @@ body {
     font-size: 14px;
     cursor: pointer;
     border-radius: 12px;
-    transition: right 0.3s ease; /* Smooth transition for visibility */
+    transition: right 0.3s ease; 
 }
 
 .favorite-item.swiped .delete-btn {
-    right: 0; /* Make the button visible when swiped */
+    right: 0; 
 }
 
 .favorite-item.current-location .delete-btn {
-    display: none; /* Hide the delete button for the current location */
+    display: none; 
 }
 
 .favorite-item .material-symbols-outlined {
@@ -172,7 +172,7 @@ body {
 }
 
 .search-btn {
-    right: 35px !important; /* Corectează poziția butonului de search */
+    right: 35px !important; 
 }
 
 .city-input {
@@ -297,20 +297,6 @@ body {
     padding-bottom: 12px;
 }
 
-/* .forecast-items-container::-webkit-scrollbar {
-    height: 8px;
-}
-    
-.forecast-items-container::-webkit-scrollbar-track {
-    background: rgb(0, 0, 0, 0.1);
-    border-radius: 99px;
-}
-
-.forecast-items-container::-webkit-scrollbar-thumb {
-    background: rgb(0, 0, 0, 0.15);
-    border-radius: 99px;
-} */
-
 .forecast-item {
     min-width: 80px;
     background: rgb(255, 255, 255, 0.1);
@@ -326,6 +312,8 @@ body {
     width: 60px;
     height: 60px;
 }
+
+/* END WEATHER INFO */
 
 /* Save Location Button */
 
@@ -365,19 +353,19 @@ body {
     justify-content: center;
     align-items: center;
     z-index: 2000;
-    transition: opacity 0.5s ease, visibility 0.5s ease; /* Smooth fade-out */
+    transition: opacity 0.5s ease, visibility 0.5s ease; 
 }
 
 .splash-screen.hidden {
     opacity: 0;
     visibility: hidden;
-    pointer-events: none; /* Prevent interaction during transition */
+    pointer-events: none;
 }
 
 .splash-logo {
-    width: 200px; /* Keep the larger size */
+    width: 200px; 
     height: auto;
-    animation: logo-fade-scale 1.5s ease-in-out; /* New animation */
+    animation: logo-fade-scale 1.5s ease-in-out; 
 }
 
 @keyframes logo-fade-scale {
@@ -394,5 +382,3 @@ body {
         transform: scale(1);
     }
 }
-
-/* END WEATHER INFO */
