@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">vreme-app</string>
-    <string name="title_activity_main">vreme-app</string>
+    <string name="app_name">Weatherly</string>
+    <string name="title_activity_main">Weatherly</string>
     <string name="package_name">com.vreme.app</string>
     <string name="custom_url_scheme">com.vreme.app</string>
 </resources>

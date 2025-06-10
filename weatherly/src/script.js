@@ -360,7 +360,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        // functionalitate swipe delete
+        // swipe delete
         favoriteCitiesList.addEventListener('touchstart', handleTouchStart, false);
         favoriteCitiesList.addEventListener('touchmove', handleTouchMove, false);
         favoriteCitiesList.addEventListener('click', (e) => {
